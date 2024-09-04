@@ -12,7 +12,7 @@ export default async function Home() {
   return (
     <HydrateClient>
       <main className="flex min-h-screen flex-col items-center bg-gray-950">
-        <Header />
+        <Header session={session} />
         <div className="flex w-full grow flex-col border-x text-slate-200 md:max-w-4xl">
           <div>
             {session ? (
