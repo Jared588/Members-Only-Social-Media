@@ -5,6 +5,7 @@ import { useState } from "react";
 import { api } from "~/trpc/react";
 import { getServerAuthSession } from "~/server/auth";
 import { type Session } from "next-auth";
+import Image from "next/image";
 
 interface MakePostProps {
   session: Session;
@@ -66,24 +67,31 @@ export function MakePost({ session }: MakePostProps) {
   });
 
   return (
-    <div className="flex p-4 border-b py-10">
-      <img
-        className="w-24 rounded-full size-fit"
-        src={session.user.image}
-        alt="Profile image"
-      />
+    <div className="flex border-b p-4 py-10">
+      {session.user.image ? (
+        <Image
+          src={session.user.image}
+          alt="Profile image"
+          layout="fixed"
+          width={100}
+          height={100}
+          className="rounded-full"
+        />
+      ) : (
+        <div className="h-full w-full rounded-full bg-gray-300"></div> // Placeholder for missing image
+      )}
       <form
         onSubmit={(e) => {
           e.preventDefault();
           createPost.mutate({ name });
         }}
-        className="flex flex-col gap-2 grow px-4 justify-between"
+        className="flex grow flex-col justify-between gap-2 px-4"
       >
         <textarea
           placeholder="Type something..."
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full bg-transparent px-4 py-2 text-slate-200 outline-none overflow-y-auto h-full"
+          className="h-full w-full overflow-y-auto bg-transparent px-4 py-2 text-slate-200 outline-none"
         />
         <button
           type="submit"
@@ -106,11 +114,18 @@ export function GetPosts() {
         posts.map((post) => (
           <div key={post.id} className="truncate border-b border-slate-600 p-4">
             <div className="flex items-center gap-2 pb-5">
-              <img
-                className="w-8 rounded-full"
-                src={post.createdBy.image}
-                alt="Profile image"
-              />
+              {post.createdBy.image ? (
+                <Image
+                  src={post.createdBy.image}
+                  alt="Profile image"
+                  layout="fixed"
+                  width={35}
+                  height={35}
+                  className="rounded-full"
+                />
+              ) : (
+                <div className="h-full w-full rounded-full bg-gray-300"></div> // Placeholder for missing image
+              )}
               <p>{post.createdBy.name}</p>
             </div>
             <p>{post.name}</p>
