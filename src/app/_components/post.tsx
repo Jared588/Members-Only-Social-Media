@@ -3,6 +3,12 @@
 import { useState } from "react";
 
 import { api } from "~/trpc/react";
+import { getServerAuthSession } from "~/server/auth";
+import { type Session } from "next-auth";
+
+interface MakePostProps {
+  session: Session;
+}
 
 export function LatestPost() {
   const [latestPost] = api.post.getLatest.useSuspenseQuery();
@@ -49,7 +55,7 @@ export function LatestPost() {
   );
 }
 
-export function MakePost() {
+export function MakePost({ session }: MakePostProps) {
   const utils = api.useUtils();
   const [name, setName] = useState("");
   const createPost = api.post.create.useMutation({
@@ -60,20 +66,24 @@ export function MakePost() {
   });
 
   return (
-    <div className="max-w-full">
+    <div className="flex p-4 border-b py-10">
+      <img
+        className="w-24 rounded-full size-fit"
+        src={session.user.image}
+        alt="Profile image"
+      />
       <form
         onSubmit={(e) => {
           e.preventDefault();
           createPost.mutate({ name });
         }}
-        className="flex flex-col gap-2"
+        className="flex flex-col gap-2 grow px-4 justify-between"
       >
-        <input
-          type="text"
+        <textarea
           placeholder="Type something..."
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-2 text-slate-200 bg-transparent outline-none"
+          className="w-full bg-transparent px-4 py-2 text-slate-200 outline-none overflow-y-auto h-full"
         />
         <button
           type="submit"
@@ -94,9 +104,20 @@ export function GetPosts() {
     <div className="max-w-full">
       {posts ? (
         posts.map((post) => (
-          <p key={post.id} className="truncate p-4 border-b border-slate-600">
-            {post.name}
-          </p>
+          <div key={post.id} className="truncate border-b border-slate-600 p-4">
+            <div className="flex items-center gap-2 pb-5">
+              <img
+                className="w-8 rounded-full"
+                src={post.createdBy.image}
+                alt="Profile image"
+              />
+              <p>{post.createdBy.name}</p>
+            </div>
+            <p>{post.name}</p>
+            <p className="text-xs text-slate-500">
+              {post.createdAt.toDateString()}
+            </p>
+          </div>
         ))
       ) : (
         <p>You have no posts yet.</p>

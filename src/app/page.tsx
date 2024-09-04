@@ -14,11 +14,21 @@ export default async function Home() {
   return (
     <HydrateClient>
       <main className="flex min-h-screen flex-col items-center bg-gray-950">
-        <Header/>
-        <div className="flex flex-col grow w-full border-x md:max-w-4xl text-slate-200">
+        <Header />
+        <div className="flex w-full grow flex-col border-x text-slate-200 md:max-w-4xl">
           <div>
-            <MakePost></MakePost>
-            <GetPosts></GetPosts>
+            {session ? (
+              <>
+                <MakePost session={session}/>
+                <GetPosts />
+              </>
+            ) : (
+              <>
+                <p className="flex justify-center">Please log in to write something</p>
+                <br />
+                <GetPosts />
+              </>
+            )}
           </div>
         </div>
       </main>
