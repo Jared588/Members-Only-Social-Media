@@ -11,10 +11,10 @@ interface HeaderProps {
 export default async function Header({ session }: HeaderProps) {
   return (
     <header className="h-15 flex w-full justify-between border-b-2 border-slate-400">
-      <h1 className="p-5 text-3xl text-zinc-200">T3-Messaging!</h1>
+      <Link href="/" className="p-5 text-3xl text-zinc-200">T3-Messaging!</Link>
       <div className="flex content-center items-center p-5 text-xl text-zinc-200">
         {session?.user.image ? (
-          <Link href={"/profile"} className="mr-5">
+          <Link href="/profile" className="mr-5">
             <Image
               src={session.user.image}
               alt="Profile image"

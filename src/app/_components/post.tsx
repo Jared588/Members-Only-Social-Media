@@ -112,7 +112,7 @@ export function GetPosts() {
     <div className="max-w-full">
       {posts ? (
         posts.map((post) => (
-          <div key={post.id} className="truncate border-b border-slate-600 p-4">
+          <div key={post.id} className="truncate border-y border-slate-600 p-4">
             <div className="flex items-center gap-2 pb-5">
               {post.createdBy.image ? (
                 <Image
