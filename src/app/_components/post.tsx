@@ -48,3 +48,59 @@ export function LatestPost() {
     </div>
   );
 }
+
+export function MakePost() {
+  const utils = api.useUtils();
+  const [name, setName] = useState("");
+  const createPost = api.post.create.useMutation({
+    onSuccess: async () => {
+      await utils.post.invalidate();
+      setName("");
+    },
+  });
+
+  return (
+    <div className="max-w-full">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          createPost.mutate({ name });
+        }}
+        className="flex flex-col gap-2"
+      >
+        <input
+          type="text"
+          placeholder="Type something..."
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full px-4 py-2 text-slate-200 bg-transparent outline-none"
+        />
+        <button
+          type="submit"
+          className="bg-white/10 font-semibold transition hover:bg-white/20"
+          disabled={createPost.isPending}
+        >
+          {createPost.isPending ? "Submitting..." : "Submit"}
+        </button>
+      </form>
+    </div>
+  );
+}
+
+export function GetPosts() {
+  const [posts] = api.post.getAll.useSuspenseQuery();
+
+  return (
+    <div className="max-w-full">
+      {posts ? (
+        posts.map((post) => (
+          <p key={post.id} className="truncate p-4 border-b border-slate-600">
+            {post.name}
+          </p>
+        ))
+      ) : (
+        <p>You have no posts yet.</p>
+      )}
+    </div>
+  );
+}
