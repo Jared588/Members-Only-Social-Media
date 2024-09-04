@@ -5,7 +5,7 @@ import { type Session } from "next-auth";
 import Image from "next/image";
 
 interface HeaderProps {
-  session: Session;
+  session: Session | null;
 }
 
 export default async function Header({ session }: HeaderProps) {
