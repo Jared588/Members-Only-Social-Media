@@ -9,7 +9,8 @@ const config = {
   images: {
     domains: [
       "cdn.discordapp.com",
-      "avatars.githubusercontent.com"
+      "avatars.githubusercontent.com",
+      "img.icons8.com"
     ],
   },
 };
