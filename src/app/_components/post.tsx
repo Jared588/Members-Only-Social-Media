@@ -6,6 +6,7 @@ import { api } from "~/trpc/react";
 import { getServerAuthSession } from "~/server/auth";
 import { type Session } from "next-auth";
 import Image from "next/image";
+import { PlaceholdersAndVanishInput } from "./placeholder-and-vanish-input";
 
 interface MakePostProps {
   session: Session;
@@ -67,7 +68,7 @@ export function MakePost({ session }: MakePostProps) {
   });
 
   return (
-    <div className="flex border-b p-4 py-10">
+    <div className="flex border-b p-4 py-10 items-center">
       {session.user.image ? (
         <Image
           src={session.user.image}
@@ -80,27 +81,14 @@ export function MakePost({ session }: MakePostProps) {
       ) : (
         <div className="h-full w-full rounded-full bg-gray-300"></div> // Placeholder for missing image
       )}
-      <form
+      <PlaceholdersAndVanishInput
+        placeholders={["Write something", "How was your day?", "What 'ya thinkin' about?"]}
+        onChange={(e) => setName(e.target.value)}
         onSubmit={(e) => {
           e.preventDefault();
           createPost.mutate({ name });
         }}
-        className="flex grow flex-col justify-between gap-2 px-4"
-      >
-        <textarea
-          placeholder="Type something..."
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="h-full w-full overflow-y-auto bg-transparent px-4 py-2 text-slate-200 outline-none"
-        />
-        <button
-          type="submit"
-          className="bg-white/10 font-semibold transition hover:bg-white/20"
-          disabled={createPost.isPending}
-        >
-          {createPost.isPending ? "Submitting..." : "Submit"}
-        </button>
-      </form>
+      ></PlaceholdersAndVanishInput>
     </div>
   );
 }
