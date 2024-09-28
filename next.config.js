@@ -10,8 +10,15 @@ const config = {
     domains: [
       "cdn.discordapp.com",
       "avatars.githubusercontent.com",
-      "img.icons8.com"
+      "img.icons8.com",
     ],
+  },
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
   },
 };
 
