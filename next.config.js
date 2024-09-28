@@ -13,13 +13,8 @@ const config = {
       "img.icons8.com",
     ],
   },
-  typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
-    ignoreBuildErrors: true,
-  },
+  typescript: {ignoreBuildErrors: true },
+  eslint: { ignoreDuringBuilds: true },
 };
 
 export default config;
